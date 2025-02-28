@@ -106,11 +106,9 @@ physical_product1 = PhysicalProduct(3, "Laptop", 800.00, 1, "2.5kg", "30x20x5 cm
 physical_product2 = PhysicalProduct(4, "Smartphone", 500.00, 2, "200g", "15x8x1 cm", 10.00)
 physical_product3 = PhysicalProduct(5, "Headphones", 100.00, 3, "0.3kg", "20x15x10 cm", 5.00)
 
-
 user1 = User(1, "Belfort")
 user2 = User(2, "Lupin")
 
-# Adding Products to Cart
 user1.add_to_cart(digital_product1)
 user1.add_to_cart(digital_product2)
 
@@ -118,16 +116,13 @@ user2.add_to_cart(physical_product1)
 user2.add_to_cart(physical_product2)
 user2.add_to_cart(physical_product3)
 
-
 print("User 1 Cart:")
 user1.cart.view_cart()
 print("\nUser 2 Cart:")
 user2.cart.view_cart()
 
-percentage_discount = PercentageDiscount(10)
 print("\nApplying Percentage Discount to User 1:")
 user1.checkout(percentage_discount)
 
-fixed_discount = FixedAmountDiscount(50)
 print("\nApplying Fixed Amount Discount to User 2:")
 user2.checkout(fixed_discount)
