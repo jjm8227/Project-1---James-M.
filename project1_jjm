@@ -1,0 +1,133 @@
+from abc import ABC, abstractmethod
+
+class Product:
+    def __init__(self, product_id, name, price, quantity):
+        self.product_id = product_id
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def update_quantity(self, new_quantity):
+        self.quantity = new_quantity
+
+    def get_product_info(self):
+        return f"Product ID: {self.product_id}, Name: {self.name}, Price: {self.price}, Quantity: {self.quantity}"
+
+
+class DigitalProduct(Product):
+    def __init__(self, product_id, name, price, quantity, file_size, download_link):
+        super().__init__(product_id, name, price, quantity)
+        self.file_size = file_size
+        self.download_link = download_link
+
+    def get_product_info(self):
+        return f"{super().get_product_info()}, File Size: {self.file_size}, Download Link: {self.download_link}"
+
+
+class PhysicalProduct(Product):
+    def __init__(self, product_id, name, price, quantity, weight, dimensions, shipping_cost):
+        super().__init__(product_id, name, price, quantity)
+        self.weight = weight
+        self.dimensions = dimensions
+        self.shipping_cost = shipping_cost
+
+    def get_product_info(self):
+        return f"{super().get_product_info()}, Weight: {self.weight}, Dimensions: {self.dimensions}, Shipping Cost: {self.shipping_cost}"
+
+
+class Cart:
+    def __init__(self):
+        self.__cart_items = []
+
+    def add_product(self, product):
+        self.__cart_items.append(product)
+
+    def remove_product(self, product_id):
+        for product in self.__cart_items:
+            if product.product_id == product_id:
+                self.__cart_items.remove(product)
+                break
+
+    def view_cart(self):
+        for product in self.__cart_items:
+            print(product.get_product_info())
+
+    def calculate_total(self):
+        total = sum(product.price * product.quantity for product in self.__cart_items)
+        return total
+
+
+class User:
+    def __init__(self, user_id, name):
+        self.user_id = user_id
+        self.name = name
+        self.cart = Cart()
+
+    def add_to_cart(self, product):
+        self.cart.add_product(product)
+
+    def remove_from_cart(self, product_id):
+        self.cart.remove_product(product_id)
+
+    def checkout(self, discount=None):
+        total = self.cart.calculate_total()
+        if discount:
+            total = discount.apply_discount(total)
+        print(f"Total amount after discount for {self.name}: {total}")
+        self.cart = Cart() 
+
+
+class Discount(ABC):
+    @abstractmethod
+    def apply_discount(self, total_amount):
+        pass
+
+
+class PercentageDiscount(Discount):
+    def __init__(self, percentage):
+        self.percentage = percentage
+
+    def apply_discount(self, total_amount):
+        return total_amount * (1 - self.percentage / 100)
+
+
+class FixedAmountDiscount(Discount):
+    def __init__(self, amount):
+        self.amount = amount
+
+    def apply_discount(self, total_amount):
+        return total_amount - self.amount
+
+
+
+digital_product1 = DigitalProduct(1, "Ebook", 15.00, 1, "5MB", "http://downloadlink.com/ebook")
+digital_product2 = DigitalProduct(2, "Music Album", 10.00, 1, "300MB", "http://downloadlink.com/music")
+physical_product1 = PhysicalProduct(3, "Laptop", 800.00, 1, "2.5kg", "30x20x5 cm", 20.00)
+physical_product2 = PhysicalProduct(4, "Smartphone", 500.00, 2, "200g", "15x8x1 cm", 10.00)
+physical_product3 = PhysicalProduct(5, "Headphones", 100.00, 3, "0.3kg", "20x15x10 cm", 5.00)
+
+
+user1 = User(1, "Belfort")
+user2 = User(2, "Lupin")
+
+# Adding Products to Cart
+user1.add_to_cart(digital_product1)
+user1.add_to_cart(digital_product2)
+
+user2.add_to_cart(physical_product1)
+user2.add_to_cart(physical_product2)
+user2.add_to_cart(physical_product3)
+
+
+print("User 1 Cart:")
+user1.cart.view_cart()
+print("\nUser 2 Cart:")
+user2.cart.view_cart()
+
+percentage_discount = PercentageDiscount(10)
+print("\nApplying Percentage Discount to User 1:")
+user1.checkout(percentage_discount)
+
+fixed_discount = FixedAmountDiscount(50)
+print("\nApplying Fixed Amount Discount to User 2:")
+user2.checkout(fixed_discount)
