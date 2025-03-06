@@ -101,22 +101,3 @@ class Report(Inventory):
             csv_writer = csv.writer(csv_recipes)
             csv_writer.writerow([name, *items])
         print(f"Recipe '{name}' has been added!")
-
-inventory_system = Inventory()
-
-inventory_system.add_item('Apple', 'Foods')
-inventory_system.add_item('Coke', 'Beverages')
-inventory_system.remove_item('Coke', 'Beverages')
-
-inventory_system.list_items()
-
-item1 = Item("Milk", "Beverages", "2025-03-10")
-item1.get_details()
-
-report = Report()
-report.items_in('Foods')
-
-report.create_new_recipe("Fruit Salad", ["Apple", "Banana", "Orange"])
-
-report.recipes()
-
