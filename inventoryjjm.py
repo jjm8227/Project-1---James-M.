@@ -22,19 +22,23 @@ class InventoryManager:  # Ensure this is the correct class name
     def add_new_item(self, item, category):
         if category == 'Beverages' and item not in beverages_items:
             beverages_items.append(item)
+            print(f"'{item}' added to Beverages.")
         elif category == 'Foods' and item not in food_items:
             food_items.append(item)
+            print(f"'{item}' added to Foods.")
         else:
-            print("Item is already in the selected category.")
+            print(f"'{item}' is already in the selected category or invalid category.")
 
     # Method to remove an item from a category
     def remove_existing_item(self, item, category):
         if category == 'Beverages' and item in beverages_items:
             beverages_items.remove(item)
+            print(f"'{item}' removed from Beverages.")
         elif category == 'Foods' and item in food_items:
             food_items.remove(item)
+            print(f"'{item}' removed from Foods.")
         else:
-            print("Item not found in the selected category.")
+            print(f"'{item}' not found in the selected category.")
 
     # Method to display all items in categories
     def display_items(self):
@@ -43,10 +47,10 @@ class InventoryManager:  # Ensure this is the correct class name
 
     # Method to update category (for advanced uses, not frequently needed)
     def update_category(self, category):
-        catagory = []
-        return catagory
-
-class MenuItem(InventoryManager):  # This is inheriting from Inventory
+        category = []
+        return category
+    
+class MenuItem(InventoryManager):  # This is inheriting from InventoryManager
     __item_name = ""
     __item_category = None
     __item_expiry_date = None
@@ -72,7 +76,7 @@ class MenuItem(InventoryManager):  # This is inheriting from Inventory
 
 menu_item = MenuItem()
 
-class Report(InventoryManager):  # This is inheriting from Inventory
+class Report(InventoryManager):  # This is inheriting from InventoryManager
     def __init__(self):
         pass
 
