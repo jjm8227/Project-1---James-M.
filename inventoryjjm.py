@@ -1,107 +1,110 @@
-import csv
+from abc import ABC, abstractmethod
 
-# Load food items into the 'food_items' list from the CSV file
-food_items = []
-with open('items_food.csv') as food_file:
-    food_reader = csv.reader(food_file)
-    for item in food_reader:
-        food_items.append(item[0])
 
-# Load beverage items into the 'beverages_items' list from the CSV file
-beverages_items = []
-with open('items_beverages.csv') as beverages_file:
-    beverages_reader = csv.reader(beverages_file)
-    for item in beverages_reader:
-        beverages_items.append(item[0])
+# Product Class (Base class)
+class Product:
+    def __init__(self, product_id, name, price, quantity):
+        self.product_id = product_id
+        self.name = name
+        self.price = price
+        self.quantity = quantity
 
-class InventoryManager:  # Ensure this is the correct class name
-    def __init__(self):
-        print("Inventory Management System Initialized")
+    def update_quantity(self, new_quantity):
+        self.quantity = new_quantity
 
-    # Method to add new item to a category
-    def add_new_item(self, item, category):
-        if category == 'Beverages' and item not in beverages_items:
-            beverages_items.append(item)
-            print(f"'{item}' added to Beverages.")
-        elif category == 'Foods' and item not in food_items:
-            food_items.append(item)
-            print(f"'{item}' added to Foods.")
-        else:
-            print(f"'{item}' is already in the selected category or invalid category.")
+    def get_product_info(self):
+        return f"ID: {self.product_id}, Name: {self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
-    # Method to remove an item from a category
-    def remove_existing_item(self, item, category):
-        if category == 'Beverages' and item in beverages_items:
-            beverages_items.remove(item)
-            print(f"'{item}' removed from Beverages.")
-        elif category == 'Foods' and item in food_items:
-            food_items.remove(item)
-            print(f"'{item}' removed from Foods.")
-        else:
-            print(f"'{item}' not found in the selected category.")
 
-    # Method to display all items in categories
-    def display_items(self):
-        print(f"Food Items: {food_items}")
-        print(f"Beverage Items: {beverages_items}")
+# DigitalProduct Class (Derived from Product)
+class DigitalProduct(Product):
+    def __init__(self, product_id, name, price, quantity, file_size, download_link):
+        super().__init__(product_id, name, price, quantity)
+        self.file_size = file_size
+        self.download_link = download_link
 
-    # Method to update category (for advanced uses, not frequently needed)
-    def update_category(self, category):
-        category = []
-        return category
-    
-class MenuItem(InventoryManager):  # This is inheriting from InventoryManager
-    __item_name = ""
-    __item_category = None
-    __item_expiry_date = None
+    def get_product_info(self):
+        base_info = super().get_product_info()
+        return f"{base_info}, File Size: {self.file_size}MB, Download Link: {self.download_link}"
 
-    def __init__(self):
+
+# PhysicalProduct Class (Derived from Product)
+class PhysicalProduct(Product):
+    def __init__(self, product_id, name, price, quantity, weight, dimensions, shipping_cost):
+        super().__init__(product_id, name, price, quantity)
+        self.weight = weight
+        self.dimensions = dimensions
+        self.shipping_cost = shipping_cost
+
+    def get_product_info(self):
+        base_info = super().get_product_info()
+        return f"{base_info}, Weight: {self.weight}kg, Dimensions: {self.dimensions}, Shipping Cost: {self.shipping_cost}"
+
+
+# Discount Class (Abstract Base Class)
+class Discount(ABC):
+    @abstractmethod
+    def apply_discount(self, total_amount):
         pass
 
-    def set_item_name(self, name):
-        self.__item_name = name
-        return self.__item_name
 
-    def set_item_category(self, category):
-        self.__item_category = category
+# PercentageDiscount Class (Derived from Discount)
+class PercentageDiscount(Discount):
+    def __init__(self, percentage):
+        self.percentage = percentage
 
-    def set_item_expiry(self, expiry_date):
-        self.__item_expiry_date = expiry_date
-        return self.__item_expiry_date
+    def apply_discount(self, total_amount):
+        return total_amount * (1 - self.percentage / 100)
 
-    def show_item_details(self):
-        print(f"Item Name: {self.__item_name}")
-        print(f"Category: {self.__item_category}")
-        print(f"Expiry Date: {self.__item_expiry_date}")
 
-menu_item = MenuItem()
+# FixedAmountDiscount Class (Derived from Discount)
+class FixedAmountDiscount(Discount):
+    def __init__(self, amount):
+        self.amount = amount
 
-class Report(InventoryManager):  # This is inheriting from InventoryManager
+    def apply_discount(self, total_amount):
+        return total_amount - self.amount if total_amount - self.amount > 0 else 0
+
+
+# Cart Class
+class Cart:
     def __init__(self):
-        pass
+        self.__cart_items = []
 
-    # Method to check the number of items in a category
-    def check_item_count(self, category):
-        if category == 'Foods':
-            count = len(food_items)
-        elif category == 'Beverages':
-            count = len(beverages_items)
-        print(f"There are {count} items in the '{category}' category.")
-        print("You may add or remove items as needed.")
+    def add_product(self, product):
+        self.__cart_items.append(product)
 
-    # Method to list all recipes from the recipes file
-    def list_recipes(self):
-        recipes = []
-        try:
-            with open('recipes.csv') as recipes_file:
-                recipes_reader = csv.reader(recipes_file)
-                for recipe in recipes_reader:
-                    recipes.append(recipe[0])
-            print(f"Available Recipes: {recipes}")
-        except FileNotFoundError:
-            print("Recipes file not found!")
+    def remove_product(self, product_id):
+        self.__cart_items = [item for item in self.__cart_items if item.product_id != product_id]
 
-    # Method to create a new recipe using available items
-    def add_new_recipe(self, recipe_name, items_list):
-        print(f"Creating a new recipe: {recipe_name}")
-        print(f"The ingredients for your new recipe are: {items_list}")
+    def view_cart(self):
+        return [item.get_product_info() for item in self.__cart_items]
+
+    def calculate_total(self):
+        total = sum(item.price * item.quantity for item in self.__cart_items)
+        return total
+
+    def apply_discount(self, discount: Discount):
+        total = self.calculate_total()
+        return discount.apply_discount(total)
+
+
+# User Class
+class User:
+    def __init__(self, user_id, name):
+        self.user_id = user_id
+        self.name = name
+        self.cart = Cart()
+
+    def add_to_cart(self, product):
+        self.cart.add_product(product)
+
+    def remove_from_cart(self, product_id):
+        self.cart.remove_product(product_id)
+
+    def checkout(self, discount=None):
+        total = self.cart.calculate_total()
+        if discount:
+            total = self.cart.apply_discount(discount)
+        self.cart = Cart()  # Reset the cart after checkout
+        return total
