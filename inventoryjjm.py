@@ -1,105 +1,103 @@
 import csv
 
-class InventorySystem:
+# Load food items into the 'food_items' list from the CSV file
+food_items = []
+with open('items_food.csv') as food_file:
+    food_reader = csv.reader(food_file)
+    for item in food_reader:
+        food_items.append(item[0])
+
+# Load beverage items into the 'beverages_items' list from the CSV file
+beverages_items = []
+with open('items_beverages.csv') as beverages_file:
+    beverages_reader = csv.reader(beverages_file)
+    for item in beverages_reader:
+        beverages_items.append(item[0])
+
+class InventoryManager:  # Ensure this is the correct class name
     def __init__(self):
-        self.food_items = self.load_items('items_food.csv')
-        self.beverage_items = self.load_items('items_beverages.csv')
-        print("Inventory System Initialized!")
+        print("Inventory Management System Initialized")
 
-    def load_items(self, filename):
-        items = []
-        try:
-            with open(filename, newline='') as file:
-                reader = csv.reader(file)
-                items = [line[0] for line in reader]
-        except FileNotFoundError:
-            print(f"{filename} not found!")
-        return items
-
-    def add_to_inventory(self, item, category):
-        if category == 'Beverages':
-            if item not in self.beverage_items:
-                self.beverage_items.append(item)
-            else:
-                print(f"Item '{item}' already exists in Beverages category.")
-        elif category == 'Foods':
-            if item not in self.food_items:
-                self.food_items.append(item)
-            else:
-                print(f"Item '{item}' already exists in Foods category.")
+    # Method to add new item to a category
+    def add_new_item(self, item, category):
+        if category == 'Beverages' and item not in beverages_items:
+            beverages_items.append(item)
+        elif category == 'Foods' and item not in food_items:
+            food_items.append(item)
         else:
-            print("Invalid category!")
+            print("Item is already in the selected category.")
 
-    def remove_from_inventory(self, item, category):
-        if category == 'Beverages' and item in self.beverage_items:
-            self.beverage_items.remove(item)
-        elif category == 'Foods' and item in self.food_items:
-            self.food_items.remove(item)
+    # Method to remove an item from a category
+    def remove_existing_item(self, item, category):
+        if category == 'Beverages' and item in beverages_items:
+            beverages_items.remove(item)
+        elif category == 'Foods' and item in food_items:
+            food_items.remove(item)
         else:
-            print(f"Item '{item}' not found in {category} category.")
+            print("Item not found in the selected category.")
 
-    def display_inventory(self):
-        print(f"\n--- Current Inventory ---")
-        print(f"Foods: {self.food_items}")
-        print(f"Beverages: {self.beverage_items}")
+    # Method to display all items in categories
+    def display_items(self):
+        print(f"Food Items: {food_items}")
+        print(f"Beverage Items: {beverages_items}")
 
-    def get_items_by_category(self, category):
-        if category == 'Foods':
-            return self.food_items
-        elif category == 'Beverages':
-            return self.beverage_items
-        else:
-            print("Invalid category!")
-            return []
-
-class Product:
-    def __init__(self, name="", category=None, expiry=None):
-        self.name = name
-        self.category = category
-        self.expiry = expiry
-
-    def update_name(self, name):
-        self.name = name
-        return self.name
-
+    # Method to update category (for advanced uses, not frequently needed)
     def update_category(self, category):
-        self.category = category
-        return self.category
+        catagory = []
+        return catagory
 
-    def update_expiry(self, date):
-        self.expiry = date
-        return self.expiry
+class MenuItem(InventoryManager):  # This is inheriting from Inventory
+    __item_name = ""
+    __item_category = None
+    __item_expiry_date = None
 
-    def show_product_details(self):
-        print(f"Product Name: {self.name}")
-        print(f"Category: {self.category}")
-        print(f"Expiration Date: {self.expiry}")
-
-class InventoryReport(InventorySystem):
     def __init__(self):
-        super().__init__()
+        pass
 
-    def report_item_count(self, category):
+    def set_item_name(self, name):
+        self.__item_name = name
+        return self.__item_name
+
+    def set_item_category(self, category):
+        self.__item_category = category
+
+    def set_item_expiry(self, expiry_date):
+        self.__item_expiry_date = expiry_date
+        return self.__item_expiry_date
+
+    def show_item_details(self):
+        print(f"Item Name: {self.__item_name}")
+        print(f"Category: {self.__item_category}")
+        print(f"Expiry Date: {self.__item_expiry_date}")
+
+menu_item = MenuItem()
+
+class Report(InventoryManager):  # This is inheriting from Inventory
+    def __init__(self):
+        pass
+
+    # Method to check the number of items in a category
+    def check_item_count(self, category):
         if category == 'Foods':
-            print(f"There are {len(self.food_items)} items in the Foods category.")
+            count = len(food_items)
         elif category == 'Beverages':
-            print(f"There are {len(self.beverage_items)} items in the Beverages category.")
-        else:
-            print(f"Invalid category '{category}'!")
+            count = len(beverages_items)
+        print(f"There are {count} items in the '{category}' category.")
+        print("You may add or remove items as needed.")
 
+    # Method to list all recipes from the recipes file
     def list_recipes(self):
+        recipes = []
         try:
-            with open('recipes.csv', newline='') as file:
-                recipes = [line[0] for line in csv.reader(file)]
-            print(f"\n--- Recipes Available ---")
-            print(recipes)
+            with open('recipes.csv') as recipes_file:
+                recipes_reader = csv.reader(recipes_file)
+                for recipe in recipes_reader:
+                    recipes.append(recipe[0])
+            print(f"Available Recipes: {recipes}")
         except FileNotFoundError:
-            print("Recipes file is missing. Ensure 'recipes.csv' exists.")
+            print("Recipes file not found!")
 
-    def add_recipe(self, recipe_name, ingredients):
-        print(f"\nAdding a new recipe: '{recipe_name}'")
-        print(f"Ingredients: {ingredients}")
-        with open('recipes.csv', mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([recipe_name, *ingredients])
-        print(f"Recipe '{recipe_name}' added successfully!")
+    # Method to create a new recipe using available items
+    def add_new_recipe(self, recipe_name, items_list):
+        print(f"Creating a new recipe: {recipe_name}")
+        print(f"The ingredients for your new recipe are: {items_list}")
