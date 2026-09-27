@@ -63,5 +63,5 @@ streamlit run app.py
 
 **James J. Macartney**
 
-Computer Science Student
-Pennsylvania State University
+Computer Science Major
+Pennsylvania State University, Abington
