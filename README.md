@@ -1,67 +1,58 @@
-# AI Fake News Detector
 
-A Python-based web application that analyzes online news articles and displays an automated prediction with a confidence score.
+# E-Commerce Shopping System - Python Project
+
+A Python shopping-cart project built to practice object-oriented programming and simulate the core steps of an online checkout system. The application models products, users, discounts, and shopping carts.
 
 ## Features
 
-* Enter a news article URL through an interactive web interface
-* Retrieve and process article content
-* Analyze article text
-* Display the prediction and confidence score
-* Interactive interface built with Streamlit
-* Developed using Git and GitHub for version control
+- Organizes product, user, and discount information using Python objects.
+- Supports shopping-cart operations and a simulated checkout workflow.
+- Applies discounts to purchases.
+- Uses input validation to handle user entries.
+- Uses file input/output for application data.
 
-## Technologies
+## Technologies and Concepts
 
-* Python
-* Streamlit
-* Git
-* GitHub
+- **Language:** Python
+- **Concepts:** Object-oriented programming (OOP), modular design, file I/O, input validation, and checkout calculations
+- **Version Control:** Git and GitHub
 
-## Overview
+## How It Works
 
-1. The user enters a news article URL.
-2. The application retrieves the article content.
-3. The article text is processed for analysis.
-4. The application generates a prediction.
-5. The result and confidence score are displayed to the user.
+1. The application represents products and users through Python objects.
+2. A user selects products for a shopping cart.
+3. Discount logic adjusts the purchase total where applicable.
+4. The program validates relevant inputs and simulates checkout.
 
-## Installation
+## Running the Project
 
-Clone the repository:
+1. Clone the repository:
 
-```bash
-git clone https://github.com/jjm8227/AI-Fake-News-Detector-Python-Website-Project.git
-cd AI-Fake-News-Detector-Python-Website-Project
-```
+   ```bash
+   git clone 'https://github.com/jjm8227/Project-1---James-M.'
+   ```
 
-Install the required dependencies:
+2. Open the cloned project folder and locate the program's main Python file.
 
-```bash
-pip install -r requirements.txt
-```
+3. Run it with Python 3, substituting the actual filename:
 
-Run the Streamlit application:
+   ```bash
+   python YOUR_MAIN_FILE.py
+   ```
 
-```bash
-streamlit run app.py
-```
+> **Before publishing:** Replace `YOUR_MAIN_FILE.py` with the actual entry-point filename, and adjust the setup steps if your project needs additional files or packages.
 
-> Replace `app.py` with the actual filename if your main Python file has a different name.
 
-# Development, Web Interfaces, Text Processing, User input, and Version Control using Git and GitHub.
+## What I Practiced
 
-## Future Improvements
+This project helped me organize a larger Python application with classes, handle user input, and connect product, shopping-cart, and discount behavior into a checkout workflow.
 
-* Improve prediction accuracy
-* Add additional article-processing methods
-* Improve error handling for invalid or inaccessible URLs
-* Add automated testing
-* Deploy the application online
+## Possible Future Improvements
+
+- Add automated tests for cart totals and discounts.
+- Provide clearer error messages for invalid input.
+- Add a more polished user interface.
 
 ## Author
 
-**James J. Macartney**
-
-Computer Science Major
-Pennsylvania State University, Abington
+**James J. Macartney**   
