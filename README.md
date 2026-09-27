@@ -49,7 +49,7 @@ streamlit run app.py
 
 > Replace `app.py` with the actual filename if your main Python file has a different name.
 
-# development, web interfaces, text processing, user input, and version control using Git and GitHub.
+# Development, Web Interfaces, Text Processing, User input, and Version Control using Git and GitHub.
 
 ## Future Improvements
 
