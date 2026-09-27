@@ -43,10 +43,6 @@ A Python shopping-cart project built to practice object-oriented programming and
 > **Before publishing:** Replace `YOUR_MAIN_FILE.py` with the actual entry-point filename, and adjust the setup steps if your project needs additional files or packages.
 
 
-## What I Practiced
-
-This project helped me organize a larger Python application with classes, handle user input, and connect product, shopping-cart, and discount behavior into a checkout workflow.
-
 ## Possible Future Improvements
 
 - Add automated tests for cart totals and discounts.
